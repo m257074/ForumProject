@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IC470 Forum</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 2em 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1em 0;
+            text-align: center;
+        }
+        .post {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin-bottom: 1em;
+            padding: 1em;
+        }
+        .post h3 {
+            margin-top: 0;
+        }
+        .post-form {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 1em;
+            margin-bottom: 1em;
+        }
+        .post-form input, .post-form textarea {
+            width: 100%;
+            padding: 0.5em;
+            margin-bottom: 1em;
+        }
+        .post-form button {
+            padding: 0.5em 1em;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .post-form button:hover {
+            background-color: #575757;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>IC470 Forum</h1>
+    </header>
+
+    <div class="container">
+        <div class="post-form">
+            <h2>Create a New Post</h2>
+            <form action="submit_feedback.php" method="post">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" required><br><br>
+        
+                <label for="alpha">Alpha</label>
+                <input type="text" id="alpha" name="alpha" required><br><br>
+        
+                <label for="message">Text:</label><br>
+                <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
+        
+                <input type="submit" value="Submit">
+            </form>
+            <!--<input type="text" id="postTitle" placeholder="Post Title">
+            <textarea id="postContent" rows="4" placeholder="Post Content"></textarea>
+            <button onclick="createPost()">Submit</button> -->
+        </div>
+
+        <!-- <div id="posts">
+            Posts will be dynamically inserted here
+        </div> -->
+    </div>
+
+    <script>
+        // Mock database
+        let posts = [];
+
+        // Function to create a new post
+        function createPost() {
+            const title = document.getElementById('postTitle').value;
+            const content = document.getElementById('postContent').value;
+            
+            if (title && content) {
+                const newPost = {
+                    id: posts.length + 1,
+                    title: title,
+                    content: content
+                };
+                posts.push(newPost);
+                renderPosts();
+                
+                // Clear the form
+                document.getElementById('postTitle').value = '';
+                document.getElementById('postContent').value = '';
+            } else {
+                alert('Please fill out both fields.');
+            }
+        }
+
+        // Function to render posts
+        function renderPosts() {
+            const postsContainer = document.getElementById('posts');
+            postsContainer.innerHTML = '';
+
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+                postElement.innerHTML = `
+                    <h3>${post.title}</h3>
+                    <p>${post.content}</p>
+                `;
+                postsContainer.appendChild(postElement);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -16,3 +16,27 @@ Wish List:
 User login
 edit/delete posts
 a
+
+
+
+HTML for home page
+    Store & display individual posts
+        Where are these kept?
+    Make post button
+        Connect w/ javascript to take in the post’s:
+            Author
+            Post
+            Date (non manual? - auto input the date the post is made ?)
+         Sending info back to the html format ?
+HTML for Post page
+    Displays collected info from java code that collected the info
+        Where is this stored ?
+    Displays:
+        Author
+        Post
+        Date
+        Comment Button
+            Connect w/ java to take in the comment’s:
+                Author
+                Post
+                Date (auto- take the date?)

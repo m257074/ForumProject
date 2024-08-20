@@ -19,24 +19,34 @@ a
 
 
 
+
 HTML for home page
     Store & display individual posts
         Where are these kept?
     Make post button
-        Connect w/ javascript to take in the post’s:
+        Connects to a post something page
+        Connect w/ some database to take in the post’s:
             Author
             Post
             Date (non manual? - auto input the date the post is made ?)
-         Sending info back to the html format ?
-HTML for Post page
+            Button will connect back to the post’s page
+HTML for Post Display page
     Displays collected info from java code that collected the info
-        Where is this stored ?
+        Where is this stored ? database? How is the database stored along the multiple html files?
     Displays:
         Author
         Post
         Date
-        Comment Button
-            Connect w/ java to take in the comment’s:
+        Text Box for comment
+            Comment Button
+            Connect w/ database to take in the comment’s:
                 Author
                 Post
                 Date (auto- take the date?)
+
+Creating a database and accessing the info:
+    SQLite ??
+    PHP ?
+    How to connect that into the html files?
+    How to connect the html files together ?
+    Buttons will go to other html files and also collect the info that is submitted into the textboxes

@@ -3,7 +3,7 @@
 $db = new SQLite3('forum.db');
 
 // Retrieve the posts
-$results = $db->query("SELECT * FROM posts");
+$results = $db->query("SELECT * FROM posts ORDER BY created_at DESC");
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +83,8 @@ $results = $db->query("SELECT * FROM posts");
        
         <?php while ($row = $results->fetchArray()): ?>
             <div>
-                <h2><?php echo htmlspecialchars($row['title']); ?></h2>
+                <h2><a href="postInfo.php?id=<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['title']); ?></a></h2>
+                <small>Posted on <?php echo $row['created_at']; ?></small>
             </div>
             <hr>
         <?php endwhile; ?>

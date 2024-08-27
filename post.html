@@ -3,128 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IC470 Forum</title>
+    <title>Post Details - IC470 Forum</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
+            margin: 20px;
+            background-color: #f0f0f0;
         }
         .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 2em 0;
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 1em 0;
+        h1 {
             text-align: center;
         }
-        .post {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            margin-bottom: 1em;
-            padding: 1em;
+        .post-content {
+            margin-top: 20px;
         }
-        .post h3 {
-            margin-top: 0;
+        .comment-section {
+            margin-top: 30px;
         }
-        .post-form {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            padding: 1em;
-            margin-bottom: 1em;
+        .comment-form {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
         }
-        .post-form input, .post-form textarea {
+        .comment-form input[type="text"],
+        .comment-form textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
             width: 100%;
-            padding: 0.5em;
-            margin-bottom: 1em;
         }
-        .post-form button {
-            padding: 0.5em 1em;
-            background-color: #333;
-            color: #fff;
+        .comment-form textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .comment-form button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
         }
-        .post-form button:hover {
-            background-color: #575757;
+        .comment-form button:hover {
+            background-color: #0056b3;
+        }
+        .comment-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .comment-list li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #e9e9e9;
+            border-radius: 5px;
+        }
+        .comment-list p {
+            margin: 5px 0;
+        }
+        a.back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a.back-button:hover {
+            background-color: #5a6268;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>IC470 Forum</h1>
-    </header>
-
     <div class="container">
-        <div class="post-form">
-            <h2>Create a New Post</h2>
-            <form action="submit_feedback.php" method="post">
-                <label for="title">Title</label>
-                <input type="text" id="title" name="title" required><br><br>
-        
-                <label for="alpha">Alpha</label>
-                <input type="text" id="alpha" name="alpha" required><br><br>
-        
-                <label for="message">Text:</label><br>
-                <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
-        
-                <input type="submit" value="Submit">
-            </form>
-            <!--<input type="text" id="postTitle" placeholder="Post Title">
-            <textarea id="postContent" rows="4" placeholder="Post Content"></textarea>
-            <button onclick="createPost()">Submit</button> -->
+        <h1 id="postTitle">Post Title</h1>
+        <p><strong>Author:</strong> <span id="postAuthor">Author Name</span></p>
+        <div class="post-content">
+            <p id="postContent">Post content goes here...</p>
         </div>
 
-        <!-- <div id="posts">
-            Posts will be dynamically inserted here
-        </div> -->
+        <div class="comment-form">
+            <h3>Add a Comment</h3>
+            <form id="commentForm">
+                <label for="commentAuthor">Your Name</label>
+                <input type="text" id="commentAuthor" name="commentAuthor" placeholder="Enter your name" required>
+
+                <label for="commentContent">Comment</label>
+                <textarea id="commentContent" name="commentContent" placeholder="Write your comment here" required></textarea>
+
+                <button type="submit">Submit Comment</button>
+            </form>
+        </div>
+
+        <div class="comment-section">
+            <h2>Comments</h2>
+            <ul class="comment-list" id="commentList">
+                <!-- Comments will be dynamically added here -->
+            </ul>
+        </div>
+
+        <a href="index.php" class="back-button">Back to Forum</a>
     </div>
 
     <script>
-        // Mock database
-        let posts = [];
-
-        // Function to create a new post
-        function createPost() {
-            const title = document.getElementById('postTitle').value;
-            const content = document.getElementById('postContent').value;
+        async function loadPostDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
             
-            if (title && content) {
-                const newPost = {
-                    id: posts.length + 1,
-                    title: title,
-                    content: content
-                };
-                posts.push(newPost);
-                renderPosts();
-                
-                // Clear the form
-                document.getElementById('postTitle').value = '';
-                document.getElementById('postContent').value = '';
-            } else {
-                alert('Please fill out both fields.');
-            }
-        }
+            // Fetch post details
+            const postResponse = await fetch(`/api/posts/${postId}`);
+            const post = await postResponse.json();
+            document.getElementById('postTitle').textContent = post.title;
+            document.getElementById('postAuthor').textContent = post.author;
+            document.getElementById('postContent').textContent = post.content;
 
-        // Function to render posts
-        function renderPosts() {
-            const postsContainer = document.getElementById('posts');
-            postsContainer.innerHTML = '';
-
-            posts.forEach(post => {
-                const postElement = document.createElement('div');
-                postElement.className = 'post';
-                postElement.innerHTML = `
-                    <h3>${post.title}</h3>
-                    <p>${post.content}</p>
-                `;
-                postsContainer.appendChild(postElement);
+            // Fetch comments
+            const commentsResponse = await fetch(`/api/posts/${postId}/comments`);
+            const comments = await commentsResponse.json();
+            const commentList = document.getElementById('commentList');
+            commentList.innerHTML = '';
+            comments.forEach(comment => {
+                const li = document.createElement('li');
+                li.innerHTML = `<p><strong>${comment.author}:</strong> ${comment.content}</p>`;
+                commentList.appendChild(li);
             });
         }
+
+        document.getElementById('commentForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+
+            const commentAuthor = document.getElementById('commentAuthor').value;
+            const commentContent = document.getElementById('commentContent').value;
+
+            // Post the comment to the server
+            await fetch(`/api/posts/${postId}/comments`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    author: commentAuthor,
+                    content: commentContent
+                })
+            });
+
+            // Reload the comments
+            loadPostDetails();
+
+            // Clear the form
+            document.getElementById('commentForm').reset();
+        });
+
+        loadPostDetails();
     </script>
 </body>
 </html>
+
+

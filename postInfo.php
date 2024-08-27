@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment'])) {
 }
 
 // Retrieve comments for this post
-$stmt = $db->prepare("SELECT * FROM comments WHERE post_id = :post_id ORDER BY likes ORDER BY created_at DESC");
+$stmt = $db->prepare("SELECT * FROM comments WHERE post_id = :post_id ORDER BY likes, created_at DESC");
 $stmt->bindValue(':post_id', $post_id, SQLITE3_INTEGER);
 $comments = $stmt->execute();
 ?>

@@ -3,7 +3,8 @@
 $db = new SQLite3('forum.db');
 
 // Retrieve the posts
-$results = $db->query("SELECT * FROM posts ORDER BY created_at DESC");
+$results = $db->query("SELECT id, title, author, content, likes, dislikes, (likes - dislikes) 
+AS net_likes, created_at FROM posts ORDER BY net_likes DESC, created_at ASC");
 ?>
 
 <!DOCTYPE html>
@@ -56,6 +57,10 @@ $results = $db->query("SELECT * FROM posts ORDER BY created_at DESC");
             color: #007bff;
         }
 
+        .like-dislike {
+            margin-top: 10px;
+        }
+
         .create-post-button {
             display: block;
             margin: 20px auto;
@@ -79,14 +84,15 @@ $results = $db->query("SELECT * FROM posts ORDER BY created_at DESC");
         <h1>IC470 Forum</h1>
 
         <a href="create_post.html" class="create-post-button">Create Post</a>
-
-       
+        
         <?php while ($row = $results->fetchArray()): ?>
-            <div>
+            <div class="post">
                 <h2><a href="postInfo.php?id=<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['title']); ?></a></h2>
-                <small>Posted on <?php echo $row['created_at']; ?></small>
+                <p><strong>Author:</strong> <?php echo htmlspecialchars($row['author']); ?></p>
+                <p><strong>Net Likes:</strong> <?php echo htmlspecialchars($row['net_likes']); ?></p>
+                <p><small>Posted on <?php echo htmlspecialchars($row['created_at']); ?></small></p>
+                <hr>
             </div>
-            <hr>
         <?php endwhile; ?>
     </div>`
 

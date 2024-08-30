@@ -8,6 +8,8 @@ $db->exec("CREATE TABLE IF NOT EXISTS posts (
     title TEXT NOT NULL,
     author TEXT NOT NULL,
     content TEXT NOT NULL,
+    likes INTEGER DEFAULT 0,
+    dislikes INTEGER DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 )");
 
@@ -15,10 +17,12 @@ $db->exec("CREATE TABLE IF NOT EXISTS posts (
 $db->exec("CREATE TABLE IF NOT EXISTS comments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     post_id INTEGER,
+    parent_comment_id INTEGER,
     comment TEXT NOT NULL,
-    likes INTEGER,
-    dislikes INTEGER,
+    likes INTEGER DEFAULT 0,
+    dislikes INTEGER DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(post_id) REFERENCES posts(id)
 )");
+
 ?>
